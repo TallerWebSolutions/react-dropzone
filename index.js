@@ -36,6 +36,7 @@ var Dropzone = React.createClass({
     });
 
     var files;
+
     if (e.dataTransfer) {
       files = e.dataTransfer.files;
     } else if (e.target) {
@@ -44,8 +45,20 @@ var Dropzone = React.createClass({
 
     if (this.props.onDrop) {
       files = Array.prototype.slice.call(files);
+      this.updatePreview(files);
       this.props.onDrop(files);
     }
+  },
+
+  updatePreview: function (files) {
+    var reader = new FileReader();
+    var preview = this.refs.uploadPreview;
+
+    reader.onload = function (e) {
+      preview.getDOMNode().src = e.target.result;
+    }
+
+    reader.readAsDataURL(files[0]);
   },
 
   onClick: function () {
@@ -71,7 +84,11 @@ var Dropzone = React.createClass({
 
     return (
       <div className={className} style={style} onClick={this.onClick} onDragLeave={this.onDragLeave} onDragOver={this.onDragOver} onDrop={this.onDrop}>
-        <input style={{display: 'none' }} type='file' multiple ref='fileInput' onChange={this.onDrop} />
+        <input style={{display: 'none' }} type='file' ref='fileInput' onChange={this.onDrop} />
+        <div className="dropzone__preview">
+          <i>{/* helper to vertical alignment. */}</i>
+          <img ref="uploadPreview" />
+        </div>
         {this.props.children}
       </div>
     );
