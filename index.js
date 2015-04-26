@@ -3,14 +3,17 @@ var React = require('react');
 var Dropzone = React.createClass({
   getInitialState: function() {
     return {
-      isDragActive: false
+      isDragActive: false,
+      isChange: false,
+      src: this.props.src
     }
   },
 
   propTypes: {
     onDrop: React.PropTypes.func.isRequired,
     size: React.PropTypes.number,
-    style: React.PropTypes.object
+    style: React.PropTypes.object,
+    src: React.PropTypes.string
   },
 
   onDragLeave: function(e) {
@@ -32,7 +35,8 @@ var Dropzone = React.createClass({
     e.preventDefault();
 
     this.setState({
-      isDragActive: false
+      isDragActive: false,
+      isChange: true
     });
 
     var files;
@@ -49,14 +53,16 @@ var Dropzone = React.createClass({
       this.props.onDrop(files);
     }
   },
-
+  // @TODO: remove this to extends component.
   updatePreview: function (files) {
     var reader = new FileReader();
     var preview = this.refs.uploadPreview;
 
     reader.onload = function (e) {
-      preview.getDOMNode().src = e.target.result;
-    }
+      this.setState({
+        src: e.target.result
+      });
+    }.bind(this);
 
     reader.readAsDataURL(files[0]);
   },
@@ -87,9 +93,9 @@ var Dropzone = React.createClass({
         <input style={{display: 'none' }} type='file' ref='fileInput' onChange={this.onDrop} />
         <div className="dropzone__preview">
           <i>{/* helper to vertical alignment. */}</i>
-          <img ref="uploadPreview" />
+          <img ref="uploadPreview" src={this.state.src} />
         </div>
-        {this.props.children}
+        { !this.state.src && this.props.children }
       </div>
     );
   }
