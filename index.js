@@ -16,6 +16,14 @@ var Dropzone = React.createClass({
     src: React.PropTypes.string
   },
 
+  componentWillReceiveProps: function (nextProps) {
+    if (nextProps.src != this.props.src) {
+      this.setState({
+        src: nextProps.src
+      });
+    }
+  },
+  
   onDragLeave: function(e) {
     this.setState({
       isDragActive: false
@@ -67,6 +75,28 @@ var Dropzone = React.createClass({
     reader.readAsDataURL(files[0]);
   },
 
+  componentWillReceiveProps: function (nextProps) {
+    if (nextProps.src != this.props.src) {
+      this.setState({
+        src: nextProps.src
+      });
+    }
+  },
+
+  // @TODO: remove this to extends component.
+  updatePreview: function (files) {
+    var reader = new FileReader();
+    var preview = this.refs.uploadPreview;
+
+    reader.onload = function (e) {
+      this.setState({
+        src: e.target.result
+      });
+    }.bind(this);
+
+    reader.readAsDataURL(files[0]);
+  },
+
   onClick: function () {
     this.refs.fileInput.getDOMNode().click();
   },
@@ -87,7 +117,7 @@ var Dropzone = React.createClass({
     if (this.props.className) {
       style = this.props.style;
     }
-
+    console.log("DROPZONE", this.state.src);
     return (
       <div className={className} style={style} onClick={this.onClick} onDragLeave={this.onDragLeave} onDragOver={this.onDragOver} onDrop={this.onDrop}>
         <input style={{display: 'none' }} type='file' ref='fileInput' onChange={this.onDrop} />
