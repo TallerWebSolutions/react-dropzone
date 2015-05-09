@@ -23,7 +23,7 @@ var Dropzone = React.createClass({
       });
     }
   },
-  
+
   onDragLeave: function(e) {
     this.setState({
       isDragActive: false
@@ -117,7 +117,7 @@ var Dropzone = React.createClass({
     if (this.props.className) {
       style = this.props.style;
     }
-    console.log("DROPZONE", this.state.src);
+
     return (
       <div className={className} style={style} onClick={this.onClick} onDragLeave={this.onDragLeave} onDragOver={this.onDragOver} onDrop={this.onDrop}>
         <input style={{display: 'none' }} type='file' ref='fileInput' onChange={this.onDrop} />
