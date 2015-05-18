@@ -70,7 +70,7 @@ var Dropzone = React.createClass({
         src: e.target.result
       });
 
-      this.props.onDrop(files, this.state.src);
+      this.props.onDrop(files, this.state.src, this.props.preview);
     }.bind(this);
 
     reader.readAsDataURL(files[0]);
@@ -102,7 +102,7 @@ var Dropzone = React.createClass({
         <input style={{display: 'none' }} type='file' ref='fileInput' onChange={this.onDrop} />
         <div className="dropzone__preview">
           <i>{/* helper to vertical alignment. */}</i>
-          <img ref={this.props.ref} src={this.state.src} />
+          <img ref={this.props.preview} src={this.state.src} />
         </div>
         { !this.state.src && this.props.children }
       </div>
