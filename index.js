@@ -9,6 +9,12 @@ var Dropzone = React.createClass({
     }
   },
 
+  getDefaultProps: function () {
+    return {
+      preview: 'uploadPreview'
+    }
+  },
+
   propTypes: {
     onDrop: React.PropTypes.func.isRequired,
     size: React.PropTypes.number,
